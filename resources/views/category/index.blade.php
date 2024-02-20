@@ -1,4 +1,5 @@
 @extends("layouts.app")
+@section("title","categories")
 @section("content")
 <a href="{{route('categories.create')}}" type="button" class="btn btn-primary">Add Category</a>
 <table class="table">
@@ -21,4 +22,5 @@
     @endforeach
   </tbody>
 </table>
+{{$categories->links()}}
 @endsection

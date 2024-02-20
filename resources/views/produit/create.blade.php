@@ -1,4 +1,5 @@
 @extends("layouts.app")
+@section("title","create_produit")
 @section("content")
 <form method="post" action="{{route('produits.store')}}" enctype="multipart/form-data">
     @csrf

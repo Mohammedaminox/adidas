@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class ProduitController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $produits = Produit::with("categories")->get();
 

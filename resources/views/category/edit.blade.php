@@ -1,4 +1,5 @@
 @extends("layouts.app")
+@section("title","edit_categorie")
 @section("content")
 <form method="post" action="{{route('categories.update',$categories->id)}}">
     @csrf

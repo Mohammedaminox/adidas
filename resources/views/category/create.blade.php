@@ -1,4 +1,5 @@
 @extends("layouts.app")
+@section("title","create_categorie")
 @section("content")
 <form method="post" action="{{route('categories.store')}}">
     @csrf

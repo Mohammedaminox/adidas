@@ -1,4 +1,5 @@
 @extends("layouts.app")
+@section("title","edit_produit")
 @section("content")
 <form method="post" action="{{route('produits.update',$produits->id)}}" enctype="multipart/form-data">
     @csrf
@@ -22,7 +23,7 @@
   <div class="mb-3">
     <label for="category_id" class="form-label">Category</label>
     <select name="category_id" id="category_id" class="form-control">
-        @foreach($categories as $categorie)
+        @foreach($categories as $categorie) 
         <option value="{{ $categorie->id }}" {{ $categorie->id == $selectedCategoryId ? 'selected' : '' }}>
         {{ $categorie->name }}
             </option>

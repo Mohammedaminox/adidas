@@ -6,8 +6,12 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 class CategoryController extends Controller
 {
+    public function success(){
+
+        return view("success");
+    }
     public function index(){
-        $categories = Category::all();
+        $categories = Category::simplepaginate(2);
         return view('category.index',["categories"=>$categories]);
     }
     public function create(){

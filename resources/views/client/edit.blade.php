@@ -1,4 +1,5 @@
 @extends("layouts.app")
+@section("title","edit_client")
 @section("content")
 <form method="post" action="{{route('clients.update',$clients->id)}}">
     @csrf

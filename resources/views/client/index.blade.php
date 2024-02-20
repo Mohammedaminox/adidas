@@ -1,4 +1,5 @@
 @extends("layouts.app")
+@section("title","clients")
 @section("content")
 <a href="{{route('clients.create')}}" type="button" class="btn btn-primary">Add Client</a>
 <table class="table">
@@ -26,6 +27,7 @@
     </tr>
 @endforeach
 
-  </tbody>
+</tbody>
 </table>
+{{$clients->links()}}
 @endsection
