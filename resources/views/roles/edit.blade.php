@@ -2,8 +2,8 @@
 @section("title","edit_role")
 @section("content")
 <form method="post" action="{{route('roles.update',$roles->id)}}">
-    @csrf
-    @method("PATCH")
+  @csrf
+  @method("PATCH")
 
   <div class="mb-3">
     <label for="name" class="form-label">RoleName</label>
@@ -13,16 +13,18 @@
   <div class="mb-3">
     <label class="form-label">Permitons</label>
     <div>
-        @foreach($permitions as $permition)
-            <div class="form-check">
-                <input class="form-check-input" type="checkbox" name="permition_ids[]" id="permition{{ $permition->id }}" value="{{ $permition->id }}">
-                <label class="form-check-label" for="permition{{ $permition->id }}">
-                    {{ $permition->name }}
-                </label>
-            </div>
-        @endforeach
+    @foreach($routes as $route)
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" name="uri[]" id="route{{ $route->id }}" value="{{ $route->id }}" 
+               {{ $permitions->contains('route_id', $route->id) ? 'checked' : '' }}>
+        <label class="form-check-label" for="route{{ $route->id }}">
+            {{ $route->uri }}
+        </label>
     </div>
-</div>
+@endforeach
+
+    </div>
+  </div>
 
   <button type="submit" class="btn btn-primary" name="submit">Submit</button>
 </form>

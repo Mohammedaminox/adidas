@@ -59,7 +59,7 @@ class UserController extends Controller
     }
     public function delete(Request $request, $id)
     {
-        $users = Produit::find($id);
+        $users = User::find($id);
         $users->delete($request->all());
         return redirect()->route('users.index');
     }

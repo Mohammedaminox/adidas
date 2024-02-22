@@ -25,4 +25,5 @@
 
   </tbody>
 </table>
+{{$roles->links()}}
 @endsection

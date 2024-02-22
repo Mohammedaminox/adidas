@@ -16,38 +16,27 @@ class rolePermition
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $publicPermission = ['/', 'home', 'login', 'register'];
-        $uri = $request->path();
+        $uri = $request->route()->uri;
+
         $role_id = session('user_role') ?? '';
-        if ($role_id){
+        
 
-            # get all role_id in Role_permission to this id 
+        if ($role_id) {
+            $allowedRoutes = Permition::where('role_id', $role_id)->get();
 
-            $rolePermissions = Permition::where('role_id', $role_id)->get();
 
-            foreach ($rolePermissions as $rolePermission) 
-            {
-                # access to the function permission in my model Role_permission
+            foreach ($allowedRoutes as $permission) {
+                $allowedUri = $permission->route->uri;
 
-                $permission = $rolePermission->permission;
-                
-                # check the permissions for any route
 
                 if (count(explode('/', $uri)) > 2) {
-                    
-                    if (strstr($uri, $permission->permissions)) return $next($request);
-                    
+                    if (strstr($uri, $allowedUri))  return $next($request);
                 } else {
-                    
-                    if ($uri === $permission->permissions) return $next($request);
+                    if ($uri === $allowedUri) return $next($request);
                 }
-                
             }
-            return abort(404);
-        } else {
-            if (in_array($uri, $publicPermission)) return $next($request);
-            else return abort(404);
-        }
-    }
-    }
 
+            return abort(401);
+        } else return redirect('/login');
+    }
+}

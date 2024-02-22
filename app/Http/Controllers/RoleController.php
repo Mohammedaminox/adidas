@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Permition;
 use Illuminate\Http\Request;
 use App\Models\Role;
 use App\Models\Routes;
+
+use App\Models\Permition;
 
 class RoleController extends Controller
 {
     public function index()
     {
-        $roles = Role::with("permitions")->get();
+        $roles = Role::with("permitions")->simplePaginate(6);
         return view('roles.index')->with('roles', $roles);
     }
 
@@ -27,16 +28,17 @@ class RoleController extends Controller
             'name' => 'required|string',
             'uri' => 'required|array'
         ]);
+
         $roles = new Role();
         $roles->name = $request->name;
         $roles->save();
         $lastInsertedId = $roles->id;
         if ($request->has('uri') && is_array($request->uri)) {
-            foreach ($request->uri as $permition) {
-                permition::create(
+            foreach ($request->uri as $route) {
+                Permition::create(
                     [
                         'role_id' => $lastInsertedId,
-                        'route_id' => $permition,
+                        'route_id' => $route,
                     ]
                 );
             }
@@ -46,19 +48,45 @@ class RoleController extends Controller
 
     public function edit($id)
     {
-        $roles = Role::find($id);
-        $permitons = Permition::all();
-        // $selectedCategoryId = $produits->category_id;
-        return view('role.edit', ['roles' => $roles, 'permitons' => $permitons]);
+        $role = Role::find($id);
+        $routes = routes::all();
+        $permitions = Permition::where('role_id',$id)->get();
+
+
+    
+        
+
+        return view('roles.edit', ['roles' => $role, 'routes' => $routes, 'permitions' => $permitions]);
     }
 
     public function update(Request $request, $id)
     {
-        $roles = Role::find($id);
-        $roles->update($request->all());
-
+        $request->validate([
+            'name' => 'required|string',
+            'uri' => 'required|array'
+        ]);
+    
+        // Find the role by ID
+        $role = Role::findOrFail($id);
+        $role->name = $request->name;
+        $role->save();
+    
+        // Delete existing permissions for the role
+        Permition::where('role_id', $id)->delete();
+    
+        // Add updated permissions
+        if ($request->has('uri') && is_array($request->uri)) {
+            foreach ($request->uri as $route) {
+                Permition::create([
+                    'role_id' => $id,
+                    'route_id' => $route,
+                ]); 
+            }
+        }
+    
         return redirect()->route('roles.index');
     }
+    
 
     public function delete(Request $request, $id)
     {

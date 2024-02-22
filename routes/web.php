@@ -1,58 +1,114 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\rolePermition;
+
+
 
 
 
 Route::get('/', function () {
     return view('success');
 });
-Route::get('/success',[App\Http\Controllers\CategoryController::class, 'success']);
+Route::get('/success', [App\Http\Controllers\CategoryController::class, 'success']);
 
-Route::get('/categories',[App\Http\Controllers\CategoryController::class, 'index'])->name("categories.index");
-Route::get('categories/create',[App\Http\Controllers\CategoryController::class, 'create'])->name("categories.create");
-Route::post('/categories',[App\Http\Controllers\CategoryController::class, 'store'])->name("categories.store");
-Route::get('/categories/{id}/edit',[App\Http\Controllers\CategoryController::class, 'edit'])->name("categories.edit");
-Route::patch('/categories/{id}/update',[App\Http\Controllers\CategoryController::class, 'update'])->name("categories.update");
-Route::get('/categories/{id}/delete',[App\Http\Controllers\CategoryController::class, 'delete'])->name("categories.delete");
-
-
-
-Route::get('/produits',[App\Http\Controllers\ProduitController::class, 'index'])->name("produits.index");
-Route::get('produits/create',[App\Http\Controllers\ProduitController::class, 'create'])->name("produits.create");
-Route::post('/produits',[App\Http\Controllers\ProduitController::class, 'store'])->name('produits.store');
-Route::get('/produits/{id}/edit',[App\Http\Controllers\ProduitController::class, 'edit'])->name("produits.edit");
-Route::patch('/produits/{id}/update',[App\Http\Controllers\ProduitController::class, 'update'])->name("produits.update");
-Route::get('/produits/{id}/delete',[App\Http\Controllers\ProduitController::class, 'delete'])->name("produits.delete");
+Route::get('/categories', [App\Http\Controllers\CategoryController::class, 'index'])->name("categories.index");
+Route::get('categories/create', [App\Http\Controllers\CategoryController::class, 'create'])->name("categories.create");
+Route::post('/categories', [App\Http\Controllers\CategoryController::class, 'store'])->name("categories.store");
+Route::get('/categories/{id}/edit', [App\Http\Controllers\CategoryController::class, 'edit'])->name("categories.edit");
+Route::patch('/categories/{id}/update', [App\Http\Controllers\CategoryController::class, 'update'])->name("categories.update");
+Route::get('/categories/{id}/delete', [App\Http\Controllers\CategoryController::class, 'delete'])->name("categories.delete");
 
 
-Route::get('/clients',[App\Http\Controllers\ClientController::class, 'index'])->name("clients.index");
-Route::get('clients/create',[App\Http\Controllers\ClientController::class, 'create'])->name("clients.create");
-Route::post('/clients',[App\Http\Controllers\ClientController::class, 'store'])->name('clients.store');
-Route::get('/clients/{id}/edit',[App\Http\Controllers\ClientController::class, 'edit'])->name("clients.edit");
-Route::patch('/clients/{id}/update',[App\Http\Controllers\ClientController::class, 'update'])->name("clients.update");
-Route::get('/clients/{id}/delete',[App\Http\Controllers\ClientController::class, 'delete'])->name("clients.delete");
 
-Route::get('/roles',[App\Http\Controllers\RoleController::class, 'index'])->name("roles.index");
-Route::get('roles/create',[App\Http\Controllers\RoleController::class, 'create'])->name("roles.create");
-Route::post('/roles',[App\Http\Controllers\RoleController::class, 'store'])->name('roles.store');
-Route::get('/roles/{id}/edit',[App\Http\Controllers\RoleController::class, 'edit'])->name("roles.edit");
-Route::patch('/roles/{id}/update',[App\Http\Controllers\RoleController::class, 'update'])->name("roles.update");
-Route::get('/roles/{id}/delete',[App\Http\Controllers\RoleController::class, 'delete'])->name("roles.delete");
+Route::get('/produits', [App\Http\Controllers\ProduitController::class, 'index'])->name("produits.index");
+Route::get('produits/create', [App\Http\Controllers\ProduitController::class, 'create'])->name("produits.create");
+Route::post('/produits', [App\Http\Controllers\ProduitController::class, 'store'])->name('produits.store');
+Route::get('/produits/{id}/edit', [App\Http\Controllers\ProduitController::class, 'edit'])->name("produits.edit");
+Route::patch('/produits/{id}/update', [App\Http\Controllers\ProduitController::class, 'update'])->name("produits.update");
+Route::get('/produits/{id}/delete', [App\Http\Controllers\ProduitController::class, 'delete'])->name("produits.delete");
+
+Route::post('/search', [App\Http\Controllers\ProduitController::class, 'search'])->name("produits.search");
+
+Route::get('/clients', [App\Http\Controllers\ClientController::class, 'index'])->name("clients.index");
+Route::get('clients/create', [App\Http\Controllers\ClientController::class, 'create'])->name("clients.create");
+Route::post('/clients', [App\Http\Controllers\ClientController::class, 'store'])->name('clients.store');
+Route::get('/clients/{id}/edit', [App\Http\Controllers\ClientController::class, 'edit'])->name("clients.edit");
+Route::patch('/clients/{id}/update', [App\Http\Controllers\ClientController::class, 'update'])->name("clients.update");
+Route::get('/clients/{id}/delete', [App\Http\Controllers\ClientController::class, 'delete'])->name("clients.delete");
+
+Route::get('/roles', [App\Http\Controllers\RoleController::class, 'index'])->name("roles.index");
+Route::get('roles/create', [App\Http\Controllers\RoleController::class, 'create'])->name("roles.create");
+Route::post('/roles', [App\Http\Controllers\RoleController::class, 'store'])->name('roles.store');
+Route::get('/roles/{id}/edit', [App\Http\Controllers\RoleController::class, 'edit'])->name("roles.edit");
+Route::patch('/roles/{id}/update', [App\Http\Controllers\RoleController::class, 'update'])->name("roles.update");
+Route::get('/roles/{id}/delete', [App\Http\Controllers\RoleController::class, 'delete'])->name("roles.delete");
 
 
-Route::get('/home',[App\Http\Controllers\UserController::class, 'showHome'])->name("users.showHome");
-Route::get('/users',[App\Http\Controllers\UserController::class, 'index'])->name("users.index");
-Route::get('/users/create',[App\Http\Controllers\UserController::class, 'create'])->name("users.create");
-Route::post('/users',[App\Http\Controllers\UserController::class, 'store'])->name("users.store");
-Route::get('/users/{id}/edit',[App\Http\Controllers\UserController::class, 'edit'])->name("users.edit");
-Route::patch('/users/{id}/update',[App\Http\Controllers\UserController::class, 'update'])->name("users.update");
-Route::get('/users/{id}/delete',[App\Http\Controllers\UserController::class, 'delete'])->name("users.delete");
-Route::get('/register',[App\Http\Controllers\RegisterController::class, 'register'])->name("auth.register");
-Route::get('/login',[App\Http\Controllers\RegisterController::class, 'login'])->name("auth.login");
-Route::post('/login',[App\Http\Controllers\RegisterController::class, 'loginPost'])->name("login.post");
-Route::post('/register',[App\Http\Controllers\RegisterController::class, 'registerPost'])->name("register.post");
+Route::get('/home', [App\Http\Controllers\UserController::class, 'showHome'])->name("users.showHome");
+Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name("users.index");
+Route::get('/users/create', [App\Http\Controllers\UserController::class, 'create'])->name("users.create");
+Route::post('/users', [App\Http\Controllers\UserController::class, 'store'])->name("users.store");
+Route::get('/users/{id}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name("users.edit");
+Route::patch('/users/{id}/update', [App\Http\Controllers\UserController::class, 'update'])->name("users.update");
+Route::get('/users/{id}/delete', [App\Http\Controllers\UserController::class, 'delete'])->name("users.delete");
+Route::get('/register', [App\Http\Controllers\RegisterController::class, 'register'])->name("auth.register");
+Route::get('/login', [App\Http\Controllers\RegisterController::class, 'login'])->name("auth.login");
+Route::post('/login', [App\Http\Controllers\RegisterController::class, 'loginPost'])->name("login.post");
+Route::post('/register', [App\Http\Controllers\RegisterController::class, 'registerPost'])->name("register.post");
+Route::get('/logout', [App\Http\Controllers\RegisterController::class, 'logout'])->name("logout");
 
+Route::get('/forgetPassword', [App\Http\Controllers\ForgetPassword::class, 'forgetPassword'])->name("forget.password");
+Route::post('/forgetPassword', [App\Http\Controllers\ForgetPassword::class, 'forgetPasswordPost'])->name("forget.password.post");
+
+Route::get('/reset-password{token}', [App\Http\Controllers\ForgetPassword::class, 'resetPassword'])->name("reset.password");
+
+Route::post('/reset-password', [App\Http\Controllers\ForgetPassword::class, 'resetPasswordPost'])->name("reset.password.post");
+
+
+Route::middleware(rolePermition::class)->group(function () {
+
+
+
+    Route::get('/users', [App\Http\Controllers\UserController::class, 'index'])->name("users.index");
+    Route::get('/users/create', [App\Http\Controllers\UserController::class, 'create'])->name("users.create");
+    Route::post('/users', [App\Http\Controllers\UserController::class, 'store'])->name("users.store");
+    Route::get('/users/{id}/edit', [App\Http\Controllers\UserController::class, 'edit'])->name("users.edit");
+    Route::patch('/users/{id}/update', [App\Http\Controllers\UserController::class, 'update'])->name("users.update");
+    Route::get('/users/{id}/delete', [App\Http\Controllers\UserController::class, 'delete'])->name("users.delete");
+
+
+    Route::get('/categories', [App\Http\Controllers\CategoryController::class, 'index'])->name("categories.index");
+    Route::get('categories/create', [App\Http\Controllers\CategoryController::class, 'create'])->name("categories.create");
+    Route::post('/categories', [App\Http\Controllers\CategoryController::class, 'store'])->name("categories.store");
+    Route::get('/categories/{id}/edit', [App\Http\Controllers\CategoryController::class, 'edit'])->name("categories.edit");
+    Route::patch('/categories/{id}/update', [App\Http\Controllers\CategoryController::class, 'update'])->name("categories.update");
+    Route::get('/categories/{id}/delete', [App\Http\Controllers\CategoryController::class, 'delete'])->name("categories.delete");
+
+
+
+    Route::get('/produits', [App\Http\Controllers\ProduitController::class, 'index'])->name("produits.index");
+    Route::get('produits/create', [App\Http\Controllers\ProduitController::class, 'create'])->name("produits.create");
+    Route::post('/produits', [App\Http\Controllers\ProduitController::class, 'store'])->name('produits.store');
+    Route::get('/produits/{id}/edit', [App\Http\Controllers\ProduitController::class, 'edit'])->name("produits.edit");
+    Route::patch('/produits/{id}/update', [App\Http\Controllers\ProduitController::class, 'update'])->name("produits.update");
+    Route::get('/produits/{id}/delete', [App\Http\Controllers\ProduitController::class, 'delete'])->name("produits.delete");
+
+
+    Route::get('/clients', [App\Http\Controllers\ClientController::class, 'index'])->name("clients.index");
+    Route::get('clients/create', [App\Http\Controllers\ClientController::class, 'create'])->name("clients.create");
+    Route::post('/clients', [App\Http\Controllers\ClientController::class, 'store'])->name('clients.store');
+    Route::get('/clients/{id}/edit', [App\Http\Controllers\ClientController::class, 'edit'])->name("clients.edit");
+    Route::patch('/clients/{id}/update', [App\Http\Controllers\ClientController::class, 'update'])->name("clients.update");
+    Route::get('/clients/{id}/delete', [App\Http\Controllers\ClientController::class, 'delete'])->name("clients.delete");
+
+    Route::get('/roles', [App\Http\Controllers\RoleController::class, 'index'])->name("roles.index");
+    Route::get('roles/create', [App\Http\Controllers\RoleController::class, 'create'])->name("roles.create");
+    Route::post('/roles', [App\Http\Controllers\RoleController::class, 'store'])->name('roles.store');
+    Route::get('/roles/{id}/edit', [App\Http\Controllers\RoleController::class, 'edit'])->name("roles.edit");
+    Route::patch('/roles/{id}/update', [App\Http\Controllers\RoleController::class, 'update'])->name("roles.update");
+    Route::get('/roles/{id}/delete', [App\Http\Controllers\RoleController::class, 'delete'])->name("roles.delete");
+});
 
 
 

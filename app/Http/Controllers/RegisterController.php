@@ -32,6 +32,9 @@ class RegisterController extends Controller
             return back()->with('error', 'Invalid email or password');
         }
         session(['user_id' => $user->id]);
+
+        session(['user_role' => $user->roles->id]);
+
         return redirect('/home');
     }
     public function registerPost(Request $request)
@@ -43,8 +46,15 @@ class RegisterController extends Controller
 
         ]);
         $input = $request->all();
-        $input['role_id'] = 27;
+        $input['role_id'] = 39;
         User::create($input);
         return redirect('/login');
     }
+    public function logout()
+{
+    session()->forget('user_id');
+    session()->forget('user_role');
+    session()->flush();
+    return redirect()->route('auth.login');
+}
 }

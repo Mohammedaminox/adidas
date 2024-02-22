@@ -6,11 +6,12 @@ use App\Models\Category;
 use App\Models\Produit;
 use Illuminate\Http\Request;
 
+
 class ProduitController extends Controller
 {
     public function index(Request $request)
     {
-        $produits = Produit::with("categories")->get();
+        $produits = Produit::with("categories")->simplePaginate(2);
 
         return view('produit.index')->with('produits', $produits);
     }
@@ -19,7 +20,6 @@ class ProduitController extends Controller
         $categories = Category::all();
         // dd($categories);
         return view('produit.create', compact('categories'));
-        
     }
     public function store(Request $request)
     {
@@ -76,5 +76,15 @@ class ProduitController extends Controller
         $produits = Produit::find($id);
         $produits->delete($request->all());
         return redirect()->route('produits.index');
+    }
+    public function search(Request $request)
+    {
+        $searchItem = $request->input('search');
+
+
+        $produits = Produit::where('name', 'like', '%' . $searchItem . '%')->paginate(2);
+
+
+        return view('produit.index', compact('produits'));
     }
 }

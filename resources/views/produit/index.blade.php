@@ -2,7 +2,12 @@
 @section("title","produit")
 @section("content")
 <a href="{{route('produits.create')}}" type="button" class="btn btn-primary">Add Produit</a>
-<table class="table" id="amin">
+<form action="{{route('produits.search')}}" method="POST"> 
+ @csrf
+    <input type="text" name="search"  placeholder="search" id="inp">
+    <button type="submit" class="btn btn-primary" id="searchButton">Search</button>
+</form>
+<table class="table" >
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -36,4 +41,5 @@
 
   </tbody>
 </table>
+{{$produits->links()}}
 @endsection
